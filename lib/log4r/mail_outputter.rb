@@ -1,10 +1,11 @@
 #coding: utf-8
 require "log4r/outputter/outputter"
 require "mail"
+require "nkf"
 
 module Log4r
   class MailOutputter < Log4r::Outputter
-    VERSION = "0.0.2"
+    VERSION = "0.0.3"
     attr_accessor :host, :port, :from, :to, :subject, :body, :encoding
     def initialize(_name, hash={})
       super(_name, hash)
@@ -59,7 +60,7 @@ module Log4r
     
     def apply_encoding(encoding, content)
       if encoding == "ISO-2022-JP"
-        NKF.nkf("-j", content).force_encoding("binary")
+        ::NKF.nkf("-j", content).force_encoding("binary")
       else
         content
       end
